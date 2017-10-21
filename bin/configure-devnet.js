@@ -2,12 +2,9 @@
 
 var fs = require('fs');
 
-var developmentMode = process.env.NODE_ENV == 'dev'
-        || process.env.NODE_ENV == 'development'
-        || process.env.npm_config_dev
-        || process.env.npm_config_development;
+var productionMode = process.env.NODE_ENV == 'production' || process.env.npm_config_production;
 
-if (! developmentMode) {
+if (productionMode) {
     console.log('Skipping devnet configuration: not a development environment');
     process.exit(1);
 }

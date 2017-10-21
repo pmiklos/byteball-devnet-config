@@ -8,7 +8,7 @@ Normally you only want to use it in your development environment so install it a
 $ npm install --save-dev pmiklos/byteball-devnet-config
 ```
 
-The command above will also install an executable in your node `bin` folder eg. under `node_modules/.bin/byteball-devnet-config` which can be used to install the devnet protocol. Installing the protocol means overwriting the `byteballcore/constants.js` with the devnet version. A convenient solution is to run this script in the `postinstall` phase so it would run automatically after all dependencies including `byteballcore` is installed:
+The command above will also install an executable in your node `bin` folder eg. under `node_modules/.bin/byteball-devnet-config` which can be used to install the devnet protocol. Installing the protocol means overwriting the `byteballcore/constants.js` with the devnet version. A convenient solution is to run this script in the `postinstall` phase so it would run automatically after all dependencies including `byteballcore` are installed:
 
 ```json
 "scripts": {
@@ -16,23 +16,22 @@ The command above will also install an executable in your node `bin` folder eg. 
 }
 ```
 
-In order for the `byteball-devnet-config` to run you have to install your dependencies with the development environment flag on:
+
+After that, every time `npm install` runs, the devnet protocol is going to be installed as well.
+
+If your dependencies are already installed, running the `postinstall` manually will also deploy the devnet protocol:
 
 ```
-$ npm --dev install
-``` 
-or
-```
-$ npm --development install
-``` 
-
-or if you have already installed your dependencies, running the `postinstall` manually:
-
-```
-$ npm --dev run postinstall
+$ npm run postinstall
 ```
 
-## Setting the devnet hub
+Once you are ready to use your project in production, use the `--production` flag to install your dependencies without the devnet:
+
+```
+$ npm --production install
+```
+
+## Connecting to the devnet
 
 While `byteball-devnet-config` helps you setting up the devnet protocol, you still have to do a manual configuration in your `conf.js` or `conf.json`. In order to use the devnet, you have to connect to the devnet hub which is by default exposed on `localhost:6611` via an unencrypted websocket protocol:
 
@@ -43,4 +42,4 @@ exports.hub='localhost:6611';
 
 ## Learn more
 * [byteball-devnet](../../../byteball-devnet) - devnet source code and documentation
-* [pmiklos/byteball-devnet](https://hub.docker.com/r/pmiklos/byteball-devnet/) - prebuilt docker image to run the devnet 
+* [pmiklos/byteball-devnet](https://hub.docker.com/r/pmiklos/byteball-devnet/) - prebuilt docker image to run the devnet
