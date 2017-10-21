@@ -43,3 +43,7 @@ exports.hub='localhost:6611';
 ## Learn more
 * [byteball-devnet](../../../byteball-devnet) - devnet source code and documentation
 * [pmiklos/byteball-devnet](https://hub.docker.com/r/pmiklos/byteball-devnet/) - prebuilt docker image to run the devnet
+
+## Known issues
+
+The `postinstall` script does not seem to be executed after running `npm update` so a manual execution of the postinstall might be necessary every time `byteballcore` is updated.
