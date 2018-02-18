@@ -9,7 +9,38 @@ if (productionMode) {
     process.exit(1);
 }
 
-fs.createReadStream('node_modules/byteball-devnet-config/constants.js')
-    .pipe(fs.createWriteStream('node_modules/byteballcore/constants.js'));
+function devnetize(module, resolve, reject) {
+    console.log('Configuring ' + module + ' for devnet protocol');
 
-console.log('Byteball devnet configured');
+    fs.createReadStream('node_modules/byteball-devnet-config/constants.js')
+	.on('error', reject)
+        .pipe(fs.createWriteStream(module + '/constants.js'))
+	.on('error', reject)
+	.on('close', function() {
+            resolve(module);
+        });
+}
+
+var candidateModules = [
+	'node_modules/byteballcore',
+        'node_modules/headless-byteball/byteballcore'];
+
+var configurators = candidateModules
+    .filter(fs.existsSync)
+    .map(function(module) {
+        return new Promise(function(resolve, reject) {
+            devnetize(module, resolve, reject);
+        });
+    });
+
+Promise.all(configurators).then(function(modules) {
+    if (modules.length > 0) {
+        console.log('Byteball devnet configured: ' + modules);
+    } else {
+        console.error('Failed to configure devnet: no byteballcore module found');
+        process.exit(2);
+    }
+}, function(err) {
+    console.error('Failed to configure devnet:' + err);
+});
+
