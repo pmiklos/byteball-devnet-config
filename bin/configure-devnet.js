@@ -23,7 +23,7 @@ function devnetize(module, resolve, reject) {
 
 var candidateModules = [
 	'node_modules/byteballcore',
-        'node_modules/headless-byteball/byteballcore'];
+        'node_modules/headless-byteball/node_modules/byteballcore'];
 
 var configurators = candidateModules
     .filter(fs.existsSync)
