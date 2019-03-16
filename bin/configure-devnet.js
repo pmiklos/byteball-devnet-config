@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 
-var productionMode = process.env.NODE_ENV == 'production' || process.env.npm_config_production;
+var productionMode = process.env.NODE_ENV === 'production' || process.env.npm_config_production;
 
 if (productionMode) {
     console.log('Skipping devnet configuration: not a development environment');
@@ -12,7 +12,7 @@ if (productionMode) {
 function devnetize(module, resolve, reject) {
     console.log('Configuring ' + module + ' for devnet protocol');
 
-    fs.createReadStream('node_modules/byteball-devnet-config/constants.js')
+    fs.createReadStream('node_modules/obyte-devnet-config/constants.js')
 	.on('error', reject)
         .pipe(fs.createWriteStream(module + '/constants.js'))
 	.on('error', reject)
@@ -22,8 +22,9 @@ function devnetize(module, resolve, reject) {
 }
 
 var candidateModules = [
-	'node_modules/byteballcore',
-        'node_modules/headless-byteball/node_modules/byteballcore'];
+	'node_modules/ocore',
+    'node_modules/headless-obyte/node_modules/ocore'
+];
 
 var configurators = candidateModules
     .filter(fs.existsSync)
@@ -35,9 +36,9 @@ var configurators = candidateModules
 
 Promise.all(configurators).then(function(modules) {
     if (modules.length > 0) {
-        console.log('Byteball devnet configured: ' + modules);
+        console.log('Obyte devnet configured: ' + modules);
     } else {
-        console.error('Failed to configure devnet: no byteballcore module found');
+        console.error('Failed to configure devnet: no ocore module found');
         process.exit(2);
     }
 }, function(err) {
